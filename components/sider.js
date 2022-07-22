@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   HomeOutlined,
   UserOutlined,
   FileDoneOutlined,
   ContactsOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
-const { Sider } = Layout;
+import { Button, Menu } from "antd";
 
 const items = [
   { icon: HomeOutlined, label: "Home" },
@@ -19,25 +20,39 @@ const items = [
   label,
 }));
 
-const CustomSider = (props) => {
+const CustomSider = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
-    <Sider
-      style={{
-        overflow: "auto",
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        top: 0,
-        bottom: 0,
-      }}
-    >
+    <div style={{ position: "fixed" }}>
+      <Button
+        type="primary"
+        onClick={toggleCollapsed}
+        style={{
+          position: "absolute",
+          bottom: 5,
+          left: 10,
+        }}
+      >
+        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+      </Button>
       <Menu
-        theme="dark"
-        mode="inline"
         defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        mode="inline"
+        theme="dark"
+        style={{
+          height: "100vh",
+          width: collapsed ? 57 : 300,
+        }}
+        inlineCollapsed={collapsed}
         items={items}
       />
-    </Sider>
+    </div>
   );
 };
 
